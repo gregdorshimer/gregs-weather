@@ -6,7 +6,7 @@ export default function WeatherPage({children}) {
             
             <div className="row">
                 {/* TODO title area */}
-                <h1>Greg's Weather</h1>
+                <h1>Greg Weather</h1>
                 <Link href="/"><button type="button" className="btn btn-primary">Home</button></Link>
             </div>
             
