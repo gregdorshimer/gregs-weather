@@ -7,6 +7,24 @@ import axios from 'axios';
 const testURL1 = "https://api.weather.gov/gridpoints/GYX/31,80/forecast";
 const testURL2 = "https://api.weather.gov/gridpoints/GYX/76,59/forecast";
 
+// NWS API docs:
+// Docs home: https://www.weather.gov/documentation/services-web-api
+// FAQ: https://weather-gov.github.io/api/gridpoints
+
+// Find coordinates on the map: https://gps-coordinates.org/
+
+// Find forecast office codes: https://en.wikipedia.org/wiki/List_of_National_Weather_Service_Weather_Forecast_Offices
+
+// Get a grid loc (properties.gridX, and properties.gridY, and office is properties.gridId) given
+// coordinates:
+// https://api.weather.gov/points/43.66%2C-70.26
+// return GYX, 76, 59 (Portland, ME), among other data
+
+// Get forecast for an office and a grid loc: https://api.weather.gov/gridpoints/GYX/31,80/forecast
+// https://api.weather.gov/gridpoints/GYX/76,59/forecast
+
+// TODO take params to construct URL
+
 export default function Forecast() {
     const [currentLoc, setCurrentLoc] = useState(testURL2);
     const [forecast, setForecast] = useState();
