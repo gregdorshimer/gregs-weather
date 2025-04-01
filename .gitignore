@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-weather-content.js
+src/app/weather/weather-content.js
 
 # dependencies
 /node_modules
