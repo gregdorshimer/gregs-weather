@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Chau_Philomene_One } from "next/font/google";
 import Link from "next/link"
-import WeatherContent from "./weather-content";
+import Forecast from "./forecast";
 
 export default function WeatherPage({children}) {
 
@@ -16,7 +16,7 @@ export default function WeatherPage({children}) {
         
 
         
-                <WeatherContent />
+                <Forecast />
         
         
         
