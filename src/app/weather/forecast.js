@@ -2,10 +2,29 @@
 import { useState, useEffect } from "react";
 import useSWR from "swr";
 import axios from 'axios';
+import ForecastContent from "./forecast-content";
 
 
 const testURL1 = "https://api.weather.gov/gridpoints/GYX/31,80/forecast";
 const testURL2 = "https://api.weather.gov/gridpoints/GYX/76,59/forecast";
+
+const locs = {
+    "Portland, ME": {
+        coords: "43.65,-70.27",
+        office: "GYX",
+        gridpoints: "76,59"
+    },
+    "Salt Lake City, UT": {
+        coords: "40.7,-111.9",
+        office: "SLC",
+        gridpoints: "100,173",
+    }
+};
+
+function buildURL(loc) {
+    return "https://api.weather.gov/gridpoints/" + locs[loc].office + "/" + locs[loc].gridpoints + "/forecast";
+}
+
 
 // NWS API docs:
 // Docs home: https://www.weather.gov/documentation/services-web-api
@@ -17,22 +36,21 @@ const testURL2 = "https://api.weather.gov/gridpoints/GYX/76,59/forecast";
 
 // Get a grid loc (properties.gridX, and properties.gridY, and office is properties.gridId) given
 // coordinates:
-// https://api.weather.gov/points/43.66%2C-70.26
+// https://api.weather.gov/points/43.65%2C-70.27
 // return GYX, 76, 59 (Portland, ME), among other data
 
-// Get forecast for an office and a grid loc: https://api.weather.gov/gridpoints/GYX/31,80/forecast
+// Get forecast for an office and a grid loc:
+// https://api.weather.gov/gridpoints/GYX/31,80/forecast
 // https://api.weather.gov/gridpoints/GYX/76,59/forecast
 
-// TODO take params to construct URL
-
 export default function Forecast() {
-    const [currentLoc, setCurrentLoc] = useState(testURL2);
+    const [currentLoc, setCurrentLoc] = useState(testURL1);
     const [forecast, setForecast] = useState();
 
     const fetchForecast = () => {
         axios.get(currentLoc)
             .then(({data}) => {
-                console.log(data);
+                // console.log(data.properties.periods);
                 setForecast(JSON.stringify(data));
             })
             .catch(error => {
@@ -60,8 +78,7 @@ export default function Forecast() {
                     Fetch Forecast
                 </button>
 
-                <p>{forecast}</p>
-                
+                <ForecastContent content={forecast} />                
 
             </div>
 
