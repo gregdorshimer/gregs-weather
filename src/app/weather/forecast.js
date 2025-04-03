@@ -47,8 +47,9 @@ export default function Forecast() {
     const [currentLoc, setCurrentLoc] = useState(testURL1);
     const [forecast, setForecast] = useState();
 
-    const fetchForecast = () => {
-        axios.get(currentLoc)
+    const fetchForecast = (loc) => {
+        let url = buildURL(loc);
+        axios.get(url)
             .then(({data}) => {
                 // console.log(data.properties.periods);
                 setForecast(JSON.stringify(data));
@@ -59,35 +60,52 @@ export default function Forecast() {
     };
 
     return (
-        <div className="row">
+        <>
+            <div className="row">
 
-            <div className="col-4">
-                {/* TODO left column for location description, legend */}
-                <p>Sample location description.</p>
+                {/* <div className="col-4"> */}
+                    {/* TODO left column for location description, legend */}
+                    {/* <p>Sample location description.</p> */}
+                {/* </div> */}
+
+                <div className="col-9">
+                    {/* TODO forecast graph content */}
+
+                    <div className="col"></div>
+
+                    <div className="col-9">
+                        <ForecastContent content={forecast} />  
+                    </div>              
+
+                    <div className="col"></div>
+
+                </div>
+
+                <div className="col-3">
+                    {/* TODO search bar and recent locations */}
+
+                    <div className="vstack gap-2">
+
+                        <button 
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => fetchForecast("Portland, ME")}>
+                            Portland, ME
+                        </button>
+
+                        <button 
+                            type="button"
+                            className="btn btn-primary"
+                            onClick={() => fetchForecast("Salt Lake City, UT")}>
+                            Salt Lake City, UT
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
-
-            <div className="col-4">
-                {/* TODO forecast graph content */}
-                
-                <p>Sample forecast graph.</p>
-                
-                <button 
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={fetchForecast}>
-                    Fetch Forecast
-                </button>
-
-                <ForecastContent content={forecast} />                
-
-            </div>
-
-            <div className="col-4">
-                {/* TODO search bar and recent locations */}
-                <p>Sample search bar and recently viewed.</p>
-            </div>
-
-        </div>
+        </>
     );
 
 }
