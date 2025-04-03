@@ -13,12 +13,8 @@ export default function WeatherPage({children}) {
                 <h1>Weather</h1>
                 <Link href="/"><button type="button" className="btn btn-primary">Home</button></Link>
             </div>
-        
-
-        
-                <Forecast />
-        
-        
+                
+            <Forecast />
         
             <div className="container text-center fixed-bottom">
                 <p>Developed by Greg Dorshimer • March 2025</p>

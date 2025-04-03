@@ -22,6 +22,7 @@ const locs = {
 };
 
 function buildURL(loc) {
+    // "loc" must be a string that is a present as a key in "locs"
     return "https://api.weather.gov/gridpoints/" + locs[loc].office + "/" + locs[loc].gridpoints + "/forecast";
 }
 
@@ -68,12 +69,12 @@ export default function Forecast() {
                     {/* <p>Sample location description.</p> */}
                 {/* </div> */}
 
-                <div className="col-9">
+                <div className="col-10">
                     {/* TODO forecast graph content */}
 
                     <div className="col"></div>
 
-                    <div className="col-9">
+                    <div className="col-10">
                         <ForecastContent content={forecast} />  
                     </div>              
 
@@ -81,7 +82,7 @@ export default function Forecast() {
 
                 </div>
 
-                <div className="col-3">
+                <div className="col-2">
                     {/* TODO search bar and recent locations */}
 
                     <div className="vstack gap-2">
