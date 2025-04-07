@@ -1,31 +1,31 @@
 "use client";
 import { useState, useEffect } from "react";
-import useSWR from "swr";
 import axios from 'axios';
 import ForecastContent from "./forecast-content";
+import Loc from "./loc.js";
+import Async, { useAsync } from 'react-select/async';
+
 
 
 const testURL1 = "https://api.weather.gov/gridpoints/GYX/31,80/forecast";
 const testURL2 = "https://api.weather.gov/gridpoints/GYX/76,59/forecast";
 
-const locs = {
-    "Portland, ME": {
+const initLocs = [
+    {
+        city: "Portland",
+        state: "ME",
         coords: "43.65,-70.27",
         office: "GYX",
         gridpoints: "76,59"
     },
-    "Salt Lake City, UT": {
+    {
+        city: "Salt Lake City",
+        state:"UT",
         coords: "40.7,-111.9",
         office: "SLC",
         gridpoints: "100,173",
-    }
-};
-
-function buildURL(loc) {
-    // "loc" must be a string that is a present as a key in "locs"
-    return "https://api.weather.gov/gridpoints/" + locs[loc].office + "/" + locs[loc].gridpoints + "/forecast";
-}
-
+    },
+];
 
 // NWS API docs:
 // Docs home: https://www.weather.gov/documentation/services-web-api
@@ -47,9 +47,19 @@ function buildURL(loc) {
 export default function Forecast() {
     const [currentLoc, setCurrentLoc] = useState(testURL1);
     const [forecast, setForecast] = useState();
+    const [locs, setLocs] = useState(initLocs);
 
-    const fetchForecast = (loc) => {
-        let url = buildURL(loc);
+    function buildURL(city, state) {
+        for (let i = 0; i < locs.length; i++) {
+            if (locs[i].city == city && locs[i].state == state) {
+                return "https://api.weather.gov/gridpoints/" + locs[i].office + "/" + locs[i].gridpoints + "/forecast";
+            }
+        }
+        console.log("bad inputs for buildURL(city, state");
+    }
+
+    const fetchForecast = (city, state) => {
+        let url = buildURL(city, state);
         axios.get(url)
             .then(({data}) => {
                 // console.log(data.properties.periods);
@@ -60,17 +70,15 @@ export default function Forecast() {
             });
     };
 
+    const search = (queryText) => {
+        console.log("search: " + queryText);
+    };
+
     return (
         <>
             <div className="row">
 
-                {/* <div className="col-4"> */}
-                    {/* TODO left column for location description, legend */}
-                    {/* <p>Sample location description.</p> */}
-                {/* </div> */}
-
                 <div className="col-10">
-                    {/* TODO forecast graph content */}
 
                     <div className="col"></div>
 
@@ -83,23 +91,18 @@ export default function Forecast() {
                 </div>
 
                 <div className="col-2">
-                    {/* TODO search bar and recent locations */}
+                    <div className="input-group mb-3">
+                        <input type="text" className="form-control" placeholder="Search..." />
+                        <button className="btn btn-primary" onClick={() => search("sample text")}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
+                                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                            </svg>
+                        </button>
+                    </div>
 
                     <div className="vstack gap-2">
 
-                        <button 
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={() => fetchForecast("Portland, ME")}>
-                            Portland, ME
-                        </button>
-
-                        <button 
-                            type="button"
-                            className="btn btn-primary"
-                            onClick={() => fetchForecast("Salt Lake City, UT")}>
-                            Salt Lake City, UT
-                        </button>
+                        {locs.map(loc => <Loc key={loc.coords} info={JSON.stringify(loc)} clickHandler={fetchForecast} />)}
 
                     </div>
 
