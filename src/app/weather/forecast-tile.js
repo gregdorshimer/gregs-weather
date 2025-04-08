@@ -11,6 +11,7 @@ export default function ForecastTile({info, url}) {
         // console.log(parsed);
         
         return (
+            // TODO consider using bootstrap cards and placeholders
             <>               
                 <div className="container text-center col-2 mx-1 rounded bg-gray-200 vstack gap-1 position-relative">
                     

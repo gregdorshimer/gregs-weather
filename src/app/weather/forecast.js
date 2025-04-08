@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import ForecastContent from "./forecast-content";
 import Loc from "./loc.js";
-import Async, { useAsync } from 'react-select/async';
-
+import MyAsync from "./my-async.js";
 
 
 const testURL1 = "https://api.weather.gov/gridpoints/GYX/31,80/forecast";
@@ -62,16 +61,11 @@ export default function Forecast() {
         let url = buildURL(city, state);
         axios.get(url)
             .then(({data}) => {
-                // console.log(data.properties.periods);
                 setForecast(JSON.stringify(data));
             })
             .catch(error => {
                 console.log(error);
             });
-    };
-
-    const search = (queryText) => {
-        console.log("search: " + queryText);
     };
 
     return (
@@ -91,16 +85,24 @@ export default function Forecast() {
                 </div>
 
                 <div className="col-2">
-                    <div className="input-group mb-3">
+
+                    {/* <div className="input-group mb-3">
                         <input type="text" className="form-control" placeholder="Search..." />
                         <button className="btn btn-primary" onClick={() => search("sample text")}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-search" viewBox="0 0 16 16">
                                 <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                             </svg>
                         </button>
-                    </div>
+                    </div> */}
 
-                    <div className="vstack gap-2">
+                    {/* TODO react-select search bar Async */}
+                    {/* https://react-select.com/home */}
+                    {/* possible search API: */}
+                    {/* https://developers.google.com/maps/documentation/places/web-service/search-text */}
+                    {/* useful link: https://stackoverflow.com/questions/69293081/how-to-load-react-select-async-with-initial-options-for-edit-item-function-when */}
+                    <MyAsync locs={locs} locSetter={setLocs} />
+
+                    <div className="vstack gap-2 my-2">
 
                         {locs.map(loc => <Loc key={loc.coords} info={JSON.stringify(loc)} clickHandler={fetchForecast} />)}
 
@@ -108,7 +110,7 @@ export default function Forecast() {
 
                 </div>
 
-            </div>
+            </div>  
         </>
     );
 
