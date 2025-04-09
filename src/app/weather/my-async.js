@@ -37,7 +37,7 @@ export default function MyAsync({locs, locSetter}) {
         // console.log("selectHandler option:");
         // console.log(option.city);
         // console.log(locs);
-        let newLocs = locs;
+        let newLocs = [...locs];
         newLocs.unshift(
             {
                 city: option.city,
