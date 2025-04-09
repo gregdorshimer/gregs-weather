@@ -1,6 +1,8 @@
-import Async, { useAsync } from 'react-select/async';
+"use client";
+import Async from 'react-select/async';
+import axios from 'axios';
 
-export default function MyAsync({locs, locSetter}) {
+export default function MyAsync({locs, locSetter, forecastFetcher}) {
 
     const locOptions = [
         {
@@ -32,44 +34,44 @@ export default function MyAsync({locs, locSetter}) {
         }
     ];
     
-    
-    function selectHandler(option) {
-        // console.log("selectHandler option:");
-        // console.log(option.city);
-        // console.log(locs);
-        let newLocs = [...locs];
-        newLocs.unshift(
-            {
-                city: option.city,
-                state: option.state,
-                coords: option.coords,
-                office: option.office,
-                gridpoints: option.gridpoints,
+    async function selectHandler(option) {
+        // "option" is that object that is returned by the Google Places API call
+
+        let newLocs = [...locs]; // spreading then re-assigning ensures a re-render when locSetter is called
+        // let newLocs = locs;   <-- i.e. this doesn't cause a re-render when locSetter is called below
+
+        let newLoc = {
+            city: option.city,
+            state: option.state,
+            coords: option.coords,
+        };
+
+        let gridpointURL = buildGridpointURL(option.coords);
+        await axios.get(gridpointURL)
+            .then(({data}) => {
+                newLoc.office = data.properties.gridId;
+                newLoc.gridpoints = "" + data.properties.gridX + "," + data.properties.gridY;
+                let index = -1;
+                for (let i = 0; i < newLocs.length; i++) {
+                    if (newLocs[i].city == newLoc.city &&
+                        newLocs[i].state == newLoc.state) {
+                            newLocs.splice(i, 1);
+                            index = i;
+                            break;
+                    }
+                }
+                newLocs.unshift(newLoc);
+                locSetter(newLocs);
+                forecastFetcher(newLoc.office, newLoc.gridpoints);
+            })
+            .catch(error => {
+                console.log(error);
             });
-        console.log(newLocs);
-        locSetter(newLocs);
-
-        // TODO use {locSetter} to updates {locs}
-
-
-        // let gridpointURL = buildGridpointURL(option.coords);
-
-        // TODO
-        // make NWS call here
-        // parse response
-        // request forecast
-        // call setForecast (need to pass it to this component from above)
     }
 
     function buildGridpointURL(coords) {
-        // console.log(coords);
         let c = coords.split(",");
-        let url = "https://api.weather.gov/points/" + c[0] + "%2C" + c[1];
-        // console.log("buildGridpointURL:" + url);
-    }
-
-    function buildForecastURL() {
-        // TODO
+        return "https://api.weather.gov/points/" + c[0] + "%2C" + c[1];
     }
 
     const filterLocs = (term) => {
@@ -81,6 +83,7 @@ export default function MyAsync({locs, locSetter}) {
     const loadOptions = /* async */ (inputValue, callback) => {
         // https://developers.google.com/maps/documentation/places/web-service/text-search?apix_params=%7B%22fields%22%3A%22places.displayName%2Cplaces.formattedAddress%2Cplaces.addressComponents.longText%2Cplaces.addressComponents.types%22%2C%22resource%22%3A%7B%22textQuery%22%3A%22Jenkintown%22%2C%22pageSize%22%3A10%2C%22includedType%22%3A%22cities%22%7D%7D
         // https://stackoverflow.com/questions/16132591/google-maps-places-api-to-only-return-cities
+        // TODO
 
         setTimeout(() => {
             callback(filterLocs(inputValue));

@@ -1,13 +1,14 @@
+"use client";
+
 export default function Loc({info, clickHandler}) {
-    const city = JSON.parse(info).city;
-    const state = JSON.parse(info).state;
+    const parsed = JSON.parse(info);
 
     return (
         <button 
             type="button"
             className="btn btn-primary"
-            onClick={() => clickHandler(city, state)}>
-            {city}, {state}
+            onClick={() => clickHandler(parsed.office, parsed.gridpoints)}>
+            {parsed.city}, {parsed.state}
         </button>
     );
 }
