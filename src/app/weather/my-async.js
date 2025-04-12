@@ -35,7 +35,7 @@ export default function MyAsync({locs, locSetter, forecastFetcher}) {
     ];
     
     async function selectHandler(option) {
-        // "option" is that object that is returned by the Google Places API call
+        // "option" is the object that is returned by the Google Places API call
 
         let newLocs = [...locs]; // spreading then re-assigning ensures a re-render when locSetter is called
         // let newLocs = locs;   <-- i.e. this doesn't cause a re-render when locSetter is called below

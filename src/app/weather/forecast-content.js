@@ -15,7 +15,7 @@ export default function ForecastContent({content}) {
                 </div>
             </div> */}
             <div className="row mt-3">
-                    {data ? data.map(item => <ForecastTile key={item.number} info={JSON.stringify(item)} url={item.icon} />) : null}
+                    {data ? data.map(item => <ForecastTile key={item.number} info={JSON.stringify(item)} />) : null}
             </div>
         </div>
         </>
