@@ -51,17 +51,15 @@ export default function MyAsync({locs, locSetter, forecastFetcher}) {
             .then(({data}) => {
                 newLoc.office = data.properties.gridId;
                 newLoc.gridpoints = "" + data.properties.gridX + "," + data.properties.gridY;
-                let index = -1;
                 for (let i = 0; i < newLocs.length; i++) {
                     if (newLocs[i].city == newLoc.city &&
                         newLocs[i].state == newLoc.state) {
                             newLocs.splice(i, 1);
-                            index = i;
                             break;
                     }
                 }
                 newLocs.unshift(newLoc);
-                locSetter(newLocs);
+                locSetter(newLocs.slice(0,4));
                 forecastFetcher(newLoc.office, newLoc.gridpoints);
             })
             .catch(error => {
@@ -81,13 +79,33 @@ export default function MyAsync({locs, locSetter, forecastFetcher}) {
     };
 
     const loadOptions = /* async */ (inputValue, callback) => {
+        // https://react-select.com/async
         // https://developers.google.com/maps/documentation/places/web-service/text-search?apix_params=%7B%22fields%22%3A%22places.displayName%2Cplaces.formattedAddress%2Cplaces.addressComponents.longText%2Cplaces.addressComponents.types%22%2C%22resource%22%3A%7B%22textQuery%22%3A%22Jenkintown%22%2C%22pageSize%22%3A10%2C%22includedType%22%3A%22cities%22%7D%7D
         // https://stackoverflow.com/questions/16132591/google-maps-places-api-to-only-return-cities
+        // https://developers.google.com/maps/documentation/places/web-service/text-search
         // TODO
+        // ex: https://maps.googleapis.com/maps/api/place/textsearch/output?parameters
+        
+        // desired behavior from google:
+        // submit text city name -> return ArrayOf { (lat,long), city, state }
 
-        setTimeout(() => {
-            callback(filterLocs(inputValue));
-        }, 500);
+        // params to include:
+        // "textQuery": "search text"    (this is inputValue) 
+        // "fields": "places.displayName,places.formattedAddress"  <- the info to be include in the response
+        // "type" or "types" or "includedTypes"  <- not sure which, this is a filter for which places are returned
+        // ?types=(cities)   <--- to return only cities
+
+
+        if (inputValue.length > 4) {
+            // TODO make google api call below
+
+
+            // TODO remove once google api is working
+            setTimeout(() => {
+                callback(filterLocs(inputValue));
+            }, 300);
+            ////
+        }
 
         /*
         axios.get(url)
@@ -107,4 +125,3 @@ export default function MyAsync({locs, locSetter, forecastFetcher}) {
         <Async defaultOptions cacheOptions loadOptions={loadOptions} onChange={(option) => selectHandler(option)} />
     );
 }
-

@@ -61,40 +61,32 @@ export default function Forecast() {
     };
 
     return (
-        <>
-            <div className="row">
+        <div className="row">
+
+            <div className="col-10">
+                <div className="col"></div>
 
                 <div className="col-10">
+                    <ForecastContent content={forecast} />  
+                </div>              
 
-                    <div className="col"></div>
+                <div className="col"></div>
+            </div>
 
-                    <div className="col-10">
-                        <ForecastContent content={forecast} />  
-                    </div>              
 
-                    <div className="col"></div>
+            <div className="col-2">
+                <div className="vstack gap-2 my-2">
 
-                </div>
-
-                <div className="col-2">
-
-                    {/* https://developers.google.com/maps/documentation/places/web-service/search-text */}
-                    {/* useful link: https://stackoverflow.com/questions/69293081/how-to-load-react-select-async-with-initial-options-for-edit-item-function-when */}
                     <MyAsync locs={locs} locSetter={setLocs} forecastFetcher={fetchForecast} />
 
-                    <div className="vstack gap-2 my-2">
-
-                        {locs.map((loc, index) => <Loc
-                                                        key={"" + index + loc.coords}
-                                                        info={JSON.stringify(loc)}
-                                                        clickHandler={fetchForecast} />)}
-
-                    </div>
+                    {locs.map((loc, index) => <Loc
+                                                    key={"" + index + loc.coords}
+                                                    info={JSON.stringify(loc)}
+                                                    clickHandler={fetchForecast} />)}
 
                 </div>
+            </div>
 
-            </div>  
-        </>
+        </div>  
     );
-
 }
