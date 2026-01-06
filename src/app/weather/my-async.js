@@ -2,7 +2,7 @@
 import Async from 'react-select/async';
 import axios from 'axios';
 // import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
-import ApiKey from './api-key.js';
+// import ApiKey from './api-key.js';
 import { useEffect } from 'react';
 
 export default function MyAsync({locs, locSetter, forecastFetcher}) {
