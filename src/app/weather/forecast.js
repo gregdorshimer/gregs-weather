@@ -4,6 +4,7 @@ import axios from 'axios';
 import ForecastContent from "./forecast-content";
 import Loc from "./loc.js";
 import MyAsync from "./my-async.js";
+import ApiKey from "./api-key";
 
 // NWS API docs:
 // Docs home: https://www.weather.gov/documentation/services-web-api
@@ -53,7 +54,23 @@ export default function Forecast() {
         let forecastURL = buildForecastURL(office, gridpoints);
         axios.get(forecastURL)
             .then(({data}) => {
-                setForecast(JSON.stringify(data));
+                // setForecast(JSON.stringify(data));
+                setForecast(JSON.parse(JSON.stringify(data)));
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    };
+
+    const fetchPlace = () => {
+        let url = "https://places.googleapis.com/v1/places/?" + "";
+        console.log(url);
+        axios.post(url, {
+                "key": ApiKey(),
+                "textQuery": "Spicy Vegetarian Food in Sydney, Australia"
+            })
+            .then(({data}) => {
+                console.log(data);
             })
             .catch(error => {
                 console.log(error);
@@ -77,11 +94,13 @@ export default function Forecast() {
             <div className="col-2">
                 <div className="vstack gap-2 my-2">
 
+                    {/* <MyAutocomplete locs={locs} locSetter={setLocs} forecastFetcher={fetchForecast} /> */}
+
                     <MyAsync locs={locs} locSetter={setLocs} forecastFetcher={fetchForecast} />
 
                     {locs.map((loc, index) => <Loc
                                                     key={"" + index + loc.coords}
-                                                    info={JSON.stringify(loc)}
+                                                    info={loc}
                                                     clickHandler={fetchForecast} />)}
 
                 </div>

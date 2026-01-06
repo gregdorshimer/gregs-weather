@@ -1,16 +1,22 @@
 "use client";
 import Async from 'react-select/async';
 import axios from 'axios';
+// import { APILoader, PlacePicker } from '@googlemaps/extended-component-library/react';
+import ApiKey from './api-key.js';
+import { useEffect } from 'react';
 
 export default function MyAsync({locs, locSetter, forecastFetcher}) {
+    // useEffect(() => {
+    //     import("@googlemaps/extended-component-library/react");
+    // })
 
-    const locOptions = [
+    let locOptions = [
         {
             value: 'philadelphia',
             label: 'Philadelphia, PA',
             city: 'Philadelphia',
             state: "PA",
-            coords: "39.95,-75.17",
+            coords: "39.95,-75.17", 
             office: "PHI",
             gridpoints: '50,76',
         },
@@ -79,26 +85,19 @@ export default function MyAsync({locs, locSetter, forecastFetcher}) {
     };
 
     const loadOptions = /* async */ (inputValue, callback) => {
-        // https://react-select.com/async
-        // https://developers.google.com/maps/documentation/places/web-service/text-search?apix_params=%7B%22fields%22%3A%22places.displayName%2Cplaces.formattedAddress%2Cplaces.addressComponents.longText%2Cplaces.addressComponents.types%22%2C%22resource%22%3A%7B%22textQuery%22%3A%22Jenkintown%22%2C%22pageSize%22%3A10%2C%22includedType%22%3A%22cities%22%7D%7D
-        // https://stackoverflow.com/questions/16132591/google-maps-places-api-to-only-return-cities
-        // https://developers.google.com/maps/documentation/places/web-service/text-search
         // TODO
-        // ex: https://maps.googleapis.com/maps/api/place/textsearch/output?parameters
-        
+
         // desired behavior from google:
-        // submit text city name -> return ArrayOf { (lat,long), city, state }
+        // submit text city name -> return Array of { (lat,long), city, state }
 
         // params to include:
         // "textQuery": "search text"    (this is inputValue) 
-        // "fields": "places.displayName,places.formattedAddress"  <- the info to be include in the response
+        // "fields": "places[i].displayName,places[i].formattedAddress,places[i]."  <- the info to be include in the response
         // "type" or "types" or "includedTypes"  <- not sure which, this is a filter for which places are returned
         // ?types=(cities)   <--- to return only cities
-
-
+    
         if (inputValue.length > 4) {
             // TODO make google api call below
-
 
             // TODO remove once google api is working
             setTimeout(() => {
@@ -122,6 +121,9 @@ export default function MyAsync({locs, locSetter, forecastFetcher}) {
     };
 
     return (
-        <Async defaultOptions cacheOptions loadOptions={loadOptions} onChange={(option) => selectHandler(option)} />
+        <>
+            {/* <PlacePicker /> */}
+            <Async defaultOptions cacheOptions loadOptions={loadOptions} onChange={(option) => selectHandler(option)} />
+        </>
     );
 }

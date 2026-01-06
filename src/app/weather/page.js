@@ -3,7 +3,6 @@ import Link from "next/link"
 import Forecast from "./forecast";
 
 export default function WeatherPage({children}) {
-
     return (
         <div className="container text-center">
                         

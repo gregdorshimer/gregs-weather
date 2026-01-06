@@ -7,7 +7,7 @@ export default function ForecastTile({info}) {
     }
 
     else {
-        let parsed = JSON.parse(info);
+        let parsed = info;
         
         return (
             <div className="card mx-2 my-2" style={{width: "10rem"}}>
