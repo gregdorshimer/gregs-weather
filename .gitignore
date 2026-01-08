@@ -1,8 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-src/app/weather/weather-content.js
-src/app/weather/api-key.js
-links.txt
+TODO.txt
 
 # dependencies
 /node_modules

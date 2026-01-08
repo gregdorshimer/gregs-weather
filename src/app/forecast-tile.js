@@ -2,7 +2,6 @@ export default function ForecastTile({info}) {
     if (!info) {
         return (
             <></>
-            // TODO forecast tile loading/pre-fetch palceholder
         );
     }
 
