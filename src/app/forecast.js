@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
 import axios from 'axios';
-import ForecastContent from "./forecast-content";
 import ForecastTile from "./forecast-tile";
 import Loc from "./loc.js";
 import SearchBar from "./search-bar.js";
