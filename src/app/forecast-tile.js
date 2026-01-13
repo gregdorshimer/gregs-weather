@@ -1,20 +1,25 @@
-export default function ForecastTile({info}) {
-    if (!info) {
-        return (
-            <></>
-        );
-    }
+export default function ForecastTile({ info }) {
+    if (!info) return null;
 
-    else {
-        return (
-            <div className="card mx-2 my-2" style={{width: "10rem"}}>
-                <img src={info.icon} className="card-img-top my-2" alt="loading..." />
-                <div className="card-body">
-                    <h5 className="card-title">{info.name}</h5>
-                    <p className="card-text">{info.shortForecast}</p>
-                    <h6>{info.temperature}&#176;{info.temperatureUnit}</h6>
-                </div>
+    return (
+        <div className="w-40 shrink-0 rounded-xl bg-white p-4 shadow">
+            <img
+                src={info.icon}
+                alt=""
+                className="mx-auto mb-2 h-16 w-16"
+            />
+
+            <h3 className="text-sm font-semibold text-slate-800">
+                {info.name}
+            </h3>
+
+            <p className="mt-1 text-xs text-slate-600">
+                {info.shortForecast}
+            </p>
+
+            <div className="mt-2 text-lg font-bold text-slate-900">
+                {info.temperature}°{info.temperatureUnit}
             </div>
-        );
-    }
+        </div>
+    );
 }
