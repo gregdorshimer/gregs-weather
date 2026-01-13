@@ -2,6 +2,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import ForecastContent from "./forecast-content";
+import ForecastTile from "./forecast-tile";
 import Loc from "./loc.js";
 import SearchBar from "./search-bar.js";
 
@@ -20,7 +21,7 @@ export default function Forecast() {
         let forecastURL = buildForecastURL(office, gridpoints);
         axios.get(forecastURL)
             .then(({data}) => {
-                setForecast(JSON.parse(JSON.stringify(data)));
+                setForecast(data);
             })
             .catch(error => {
                 console.log(error);
@@ -34,7 +35,13 @@ export default function Forecast() {
                 <div className="col"></div>
 
                 <div className="col-10">
-                    <ForecastContent content={forecast} />  
+                    <div className="container">
+                        <div className="row mt-3">
+                                {forecast ? forecast.properties.periods.slice(0,5).map(
+                                    item => <ForecastTile key={item.number} info={item} />) : null}
+                        </div>
+                    </div>
+                    {/* <ForecastContent content={forecast} />   */}
                 </div>              
 
                 <div className="col"></div>
