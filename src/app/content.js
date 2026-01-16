@@ -83,7 +83,7 @@ export default function Content() {
             <div className="flex justify-center pb-4">
                 <div className="max-w-md w-full">
                     <SearchBar
-                        selectNewLocHandler={selectNewLoc}
+                        selectNewLoc={selectNewLoc}
                     />
                 </div>
             </div>
@@ -93,7 +93,7 @@ export default function Content() {
                     <Loc
                         key={`${index}-${loc.coords}`}
                         info={loc}
-                        selectCachedLocHandler={selectCachedLoc}
+                        selectCachedLoc={selectCachedLoc}
                     />
                 ))}
             </div>
