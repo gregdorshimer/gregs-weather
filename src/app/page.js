@@ -22,9 +22,9 @@ export default function Page() {
             </section>
 
             <div className="relative z-1 flex h-full items-center justify-center">
-                <div className="w-full max-w-3xl px-6 ml-16">
-                    {/* <div className="min-h-screen px-4 py-6"> */}
-                    <div className="min-h-screen bg-slate-100 px-4 py-6">
+                <div className="w-full max-w-3xl ml-16">
+                    {/* <div className="min-h-screen px-4 py-4"> */}
+                    <div className="min-h-screen bg-slate-100 px-4 py-4">
                         <div className="mx-auto max-w-6xl space-y-0">
                             <LoadScript
                                 googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}

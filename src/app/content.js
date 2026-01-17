@@ -1,9 +1,10 @@
 import { useState } from "react";
 import axios from 'axios';
 import { getGeocode, getLatLng } from "use-places-autocomplete";
-import ForecastTile from "./forecast-tile";
-import Loc from "./loc.js";
 import SearchBar from "./search-bar.js";
+import Loc from "./loc.js";
+import ForecastContent from "./forecast-content.js";
+import ForecastTile from "./forecast-tile";
 
 export default function Content() {
     const [cachedLocs, setCachedLocs] = useState([]);
@@ -17,7 +18,8 @@ export default function Content() {
             const response = await axios.get(`https://api.weather.gov/points/${lat}%2C${lng}`);
             const office = response.data.properties.gridId;
             const gridpoints = `${response.data.properties.gridX},${response.data.properties.gridY}`;
-            return {office, gridpoints};
+            const timeZone = response.data.properties.timeZone;
+            return response.data;
         } catch (error) {
             console.error(error);
             throw error;
@@ -28,20 +30,25 @@ export default function Content() {
     const getForecast = async (coords) => {
         const obj = await getOfficeGridpoints(coords);
         try {
-            const response = await axios.get(`https://api.weather.gov/gridpoints/${obj.office}/${obj.gridpoints}/forecast`);
-            return response.data;
+            const response = await axios.get(`https://api.weather.gov/gridpoints/${obj.properties.gridId}/${obj.properties.gridX},${obj.properties.gridY}/forecast`);
+            // TODO use above url appended with /hourly to get hourly forecast, then display temp/precip/humid/wind in a graph
+            return {
+                forecast: response.data,
+                points: obj
+            };
         } catch (error) {
             console.error(error);
             return error;
         }
     };
 
+    // function to handle a location being clicked in the search bar dropd-down
     const selectNewLoc = async (option) => {
         // "option" is the object that is returned by the Google Places API call
         if (!option) return;
 
         // create the newLoc object:
-        let newLoc = {
+        const newLoc = {
             city: option.city,
             state: option.state,
         };
@@ -56,9 +63,10 @@ export default function Content() {
             // set the newly geocoded loc to be the currentLoc, get its forecast, and set the forecast:
             setCurrentLoc(newLoc);
             const newForecast = await getForecast(newLoc.coords);
-            setForecast(newForecast);
+            setForecast(newForecast.forecast);
 
-            // add the newLoc to the cachedLocs:
+            // add timeZone to newLoc, and add newLoc to the cachedLocs:
+            newLoc.timeZone = newForecast.points.properties.timeZone;
             const newCachedLocs = [...cachedLocs]; // spreading then re-assigning ensures a re-render when setCachedLocs is called
             // let newCachedLocs = cachedLocs;   <-- i.e. this doesn't cause a re-render when setCachedLocs is called below
             newCachedLocs.unshift(newLoc);
@@ -68,11 +76,12 @@ export default function Content() {
         }
     };
 
+    // function to handle a cached location being selected
     const selectCachedLoc = async (loc) => {
         try {
             setCurrentLoc(loc);
             const newForecast = await getForecast(loc.coords);
-            setForecast(newForecast);
+            setForecast(newForecast.forecast);
         } catch (error) {
             console.error(error);
         }
@@ -88,7 +97,7 @@ export default function Content() {
                 </div>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto pb-4">
+            <div className="flex gap-2 overflow-x-auto pb-6">
                 {cachedLocs.map((loc, index) => (
                     <Loc
                         key={`${index}-${loc.coords}`}
@@ -97,6 +106,8 @@ export default function Content() {
                     />
                 ))}
             </div>
+
+            {currentLoc && <ForecastContent currentLoc={currentLoc} forecast={forecast} />}
 
             <div className="flex gap-4 overflow-x-auto pb-4">
                 {forecast && forecast.properties.periods.map(item => (
