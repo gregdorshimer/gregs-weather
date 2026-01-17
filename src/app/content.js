@@ -88,32 +88,44 @@ export default function Content() {
     };
 
     return (
-        <>
-            <div className="flex justify-center pb-4">
-                <div className="max-w-md w-full">
-                    <SearchBar
-                        selectNewLoc={selectNewLoc}
-                    />
+        <div className="relative z-1 flex h-full flex-col items-center justify-center">
+
+            <section className="w-full bg-slate-200 py-4">
+                <div className="mx-auto max-w-4xl px-4">
+                    <div className="flex justify-center pb-4">
+                        <div className="max-w-md w-full">
+                            <SearchBar selectNewLoc={selectNewLoc} />
+                        </div>
+                    </div>
+
+                    <div className="flex justify-center gap-2 overflow-x-auto">
+                        {cachedLocs.map((loc, index) => (
+                            <Loc
+                                key={`${index}-${loc.coords}`}
+                                info={loc}
+                                selectCachedLoc={selectCachedLoc}
+                            />
+                        ))}
+                    </div>
                 </div>
-            </div>
+            </section>
 
-            <div className="flex gap-2 overflow-x-auto pb-6">
-                {cachedLocs.map((loc, index) => (
-                    <Loc
-                        key={`${index}-${loc.coords}`}
-                        info={loc}
-                        selectCachedLoc={selectCachedLoc}
-                    />
-                ))}
-            </div>
+            <section className="w-full py-4">
+                <div className="mx-auto max-w-4xl px-4">
 
-            {currentLoc && <ForecastContent currentLoc={currentLoc} forecast={forecast} />}
+                    {currentLoc && <ForecastContent currentLoc={currentLoc} forecast={forecast} />}
 
-            <div className="flex gap-4 overflow-x-auto pb-4">
-                {forecast && forecast.properties.periods.map(item => (
-                    <ForecastTile key={item.number} info={item} />
-                ))}
-            </div>
-        </>
+                    <div className="flex gap-4 overflow-x-auto pb-4">
+                        {forecast && forecast.properties.periods.map(item => (
+                            <ForecastTile key={item.number} info={item} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            <footer className="mt-8 text-center text-sm text-slate-500 pb-4">
+                Developed by Greg Dorshimer • January 2026
+            </footer>
+        </div>
     );
 }

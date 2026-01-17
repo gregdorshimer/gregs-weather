@@ -12,13 +12,13 @@ export default function Layout({children}) {
         <html lang="en">
             <body>
                 <header className="bg-gray-800">
-                    <div className="mx-auto flex max-w-6xl items-center justify-center px-4 py-3 gap-96">
+                    <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
 
                         <div className="text-lg font-semibold text-white">
                             Greg's Weather
                         </div>
 
-                        <nav className="flex items-center gap-6 text-sm text-gray-200">
+                        <nav className="flex items-center gap-6 text-sm text-gray-200 flex-wrap">
 
                             <a
                                 href="http://gregdorshimer.com"
