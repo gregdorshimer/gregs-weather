@@ -1,3 +1,5 @@
+import RadarMap from "./radar-map";
+
 export default function ForecastContet({currentLoc, forecast}) {
     if (currentLoc && forecast) {
         return (
@@ -21,11 +23,7 @@ export default function ForecastContet({currentLoc, forecast}) {
                 </div>
 
                 <div className="h-full w-full">
-                    <img
-                        // src={radarUrl}
-                        alt="Radar Map"
-                        className="h-full w-full rounded object-cover"
-                    />
+                    {/* <RadarMap coords={currentLoc.coords} zoom={10} /> */}
                 </div>
             </div>
         );
