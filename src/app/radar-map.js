@@ -1,34 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "leaflet/dist/leaflet.css";
 
-export default function RadarMap({coords, zoom=7}) {
-    const lat = coords.split(",")[0];
-    const lng = coords.split(",")[1];
+export default function RadarMap({coords, zoom, layer="precip"}) {
+    const mapRef = useRef(false);
+    const lat = Number(coords.split(",")[0]);
+    const lng = Number(coords.split(",")[1]);
 
     useEffect(() => {
+        if (mapRef.current) {
+            mapRef.current.setView([lat, lng], zoom);
+            return;
+        }
+
         import("leaflet").then(L => {
-            const map = L.map("radar-map").setView([lat, lng], zoom);
+            const map = L.map("radar-map", { maxZoom: 9 }).setView([lat, lng], zoom);
 
-            // get the base map and add it as a layer
-            const baseLayer = L.tileLayer(`https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png`, {}).addTo(map);
+            // map layer
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "&copy; OpenStreet",
+            }).addTo(map);
 
-            // add the precipitation layer to the map
-            const radarLayer = L.tileLayer(
-                "https://tiles.weather.gov/tiles/overlay/nexrad/1/{z}/{x}/{y}.png",
-                {
-                    attribution: "&copy; NWS",
+            if (layer == "precip") {
+                // precip layer
+                L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                    attribution: "&copy; OpenWeather",
                     opacity: 0.5,
-                    maxZoom: 9,
-                }
-            ).addTo(map);
+                }).addTo(map);
+                // TODO remove cloud layer if present
+            } else if (layer == "cloud") {
+                // cloud layer
+                L.tileLayer(`https://tile.openweathermap.org/map/cloud_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                    opacity: 0.5,
+                }).addTo(map);
+                // TODO remove precip layer if present
+            }
 
-            return () => {
-                map.remove();
-            };
+            mapRef.current = map;
         });
-    }, [lat, lng, zoom]);
+    }, [lat, lng, zoom, layer]);
 
     return (
-        <div id="radar-map" className="w-full h-[400px] rounded-lg shadow-lg"></div>
+        <div id="radar-map" className="w-full h-[240px] rounded-lg shadow-lg" />
     );
 }

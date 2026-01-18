@@ -3,10 +3,17 @@ import RadarMap from "./radar-map";
 export default function ForecastContet({currentLoc, forecast}) {
     if (currentLoc && forecast) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch pb-4">
-                <div className="flex flex-col justify-between h-full w-full">
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 pb-4">
+                <div className="flex flex-col justify-center w-full">
                     <p className="text-sm text-slate-500">
-                        {currentLoc.timeZone}
+                        {new Date().toLocaleString("en-US", { 
+                            timeZone: currentLoc.timeZone, 
+                            year: "numeric", 
+                            month: "short", 
+                            day: "numeric", 
+                            hour: "numeric", 
+                            minute: "numeric", 
+                        })}
                     </p>
 
                     <p className="text-3xl font-bold text-slate-900 pb-2">
@@ -17,13 +24,17 @@ export default function ForecastContet({currentLoc, forecast}) {
                         {forecast.properties.periods[0].temperature}°{forecast.properties.periods[0].temperatureUnit}
                     </p>
 
-                    <p className="text-lg text-slate-900">
-                        {forecast.properties.periods[0].shortForecast} · Wind {forecast.properties.periods[0].windSpeed}
+                    <p className="text-xl text-slate-900">
+                        {forecast.properties.periods[0].shortForecast}
+                    </p>
+
+                    <p className="text-md text-slate-900">
+                        Wind {forecast.properties.periods[0].windSpeed}
                     </p>
                 </div>
 
-                <div className="h-full w-full">
-                    {/* <RadarMap coords={currentLoc.coords} zoom={10} /> */}
+                <div className="h-full w-full max-w-[500px] ml-auto">
+                    <RadarMap coords={currentLoc.coords} zoom={9} />
                 </div>
             </div>
         );
