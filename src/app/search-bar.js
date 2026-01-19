@@ -1,4 +1,4 @@
-import AsyncSelect from 'react-select/async';
+import AsyncSelect from "react-select/async";
 import usePlacesAutocomplete from "use-places-autocomplete";
 
 export default function SearchBar({selectNewLoc}) {

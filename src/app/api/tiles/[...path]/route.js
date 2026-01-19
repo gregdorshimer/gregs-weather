@@ -1,0 +1,21 @@
+import axios from "axios";
+
+export async function GET(request, context) {
+    const params = await context.params; // need to await params because it's considered a promise in React
+    const path = params.path.join("/");
+    const url = `https://tile.openweathermap.org/${path}?appid=${process.env.OPENWEATHER_API_KEY}`;
+
+    const response = await axios.get(url);
+
+    if (response.statusText !== "OK") {
+        return new Response("Tile fetch error", { status: 502 });
+    }
+
+    return new Response(response.body, {
+        status: response.status,
+        headers: {
+            "Content-Type": response.headers.get("content-type"),
+            "Cache-Control": "public, max-age=300",
+        },
+    });
+}

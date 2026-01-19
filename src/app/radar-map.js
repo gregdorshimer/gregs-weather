@@ -22,17 +22,23 @@ export default function RadarMap({coords, zoom, layer="precip"}) {
 
             if (layer == "precip") {
                 // precip layer
-                L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                // TODO remove cloud layer if present                
+                L.tileLayer("/api/tiles/map/precipitation_new/{z}/{x}/{y}.png", {
+                    attribution: "&copy; OpenWeather",
+                    opacity: 0.5
+                }).addTo(map);
+                // L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                //     attribution: "&copy; OpenWeather",
+                //     opacity: 0.5,
+                // }).addTo(map);
+
+            } else if (layer == "clouds") {
+                // cloud layer
+                // TODO remove precip layer if present
+                L.tileLayer(`https://tile.openweathermap.org/map/clouds_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
                     attribution: "&copy; OpenWeather",
                     opacity: 0.5,
                 }).addTo(map);
-                // TODO remove cloud layer if present
-            } else if (layer == "cloud") {
-                // cloud layer
-                L.tileLayer(`https://tile.openweathermap.org/map/cloud_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
-                    opacity: 0.5,
-                }).addTo(map);
-                // TODO remove precip layer if present
             }
 
             mapRef.current = map;
@@ -40,6 +46,6 @@ export default function RadarMap({coords, zoom, layer="precip"}) {
     }, [lat, lng, zoom, layer]);
 
     return (
-        <div id="radar-map" className="w-full h-[240px] rounded-lg shadow-lg" />
+        <div id="radar-map" className="z-10 w-full h-[240px] rounded-lg shadow-lg" />
     );
 }

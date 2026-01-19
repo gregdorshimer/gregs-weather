@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import SearchBar from "./search-bar.js";
 import Loc from "./loc.js";
@@ -101,7 +101,7 @@ export default function Content() {
             <section className="w-full bg-slate-100 py-4">
                 <div className="mx-auto max-w-4xl px-4">
 
-                    <div className="flex justify-center pb-4">
+                    <div className="relative z-30 flex justify-center pb-4">
                         <div className="max-w-md w-full">
                             <SearchBar selectNewLoc={selectNewLoc} />
                         </div>
@@ -132,10 +132,6 @@ export default function Content() {
                     </div>
                 </div>
             </section>
-
-            <footer className="mt-8 text-center text-sm text-slate-500 pb-4">
-                Developed by Greg Dorshimer • January 2026
-            </footer>
             
         </div>
     );

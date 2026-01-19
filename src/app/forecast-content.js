@@ -16,11 +16,11 @@ export default function ForecastContet({currentLoc, forecast}) {
                         })}
                     </p>
 
-                    <p className="text-3xl font-bold text-slate-900 pb-2">
+                    <p className="text-4xl font-bold text-slate-900 pb-2">
                         {currentLoc.city}, {currentLoc.state}
                     </p>
 
-                    <p className="text-5xl text-slate-900 pb-1">
+                    <p className="text-6xl text-slate-900 pb-1">
                         {forecast.properties.periods[0].temperature}°{forecast.properties.periods[0].temperatureUnit}
                     </p>
 

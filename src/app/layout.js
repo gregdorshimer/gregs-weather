@@ -1,4 +1,4 @@
-import './globals.css'
+import "./globals.css";
 
 export const metadata = {
   title: "Greg's Weather",
@@ -10,7 +10,7 @@ export const metadata = {
 export default function Layout({children}) {
     return (
         <html lang="en">
-            <body>
+            <body className="flex flex-col min-h-screen">
                 <header className="bg-gray-800">
                     <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
 
@@ -57,7 +57,13 @@ export default function Layout({children}) {
                     </div>
                 </header>
 
-                {children}
+                <main className="flex-1">
+                    {children}
+                </main>
+
+                <footer className="mt-auto text-center text-sm text-slate-500 pb-4">
+                    Developed by Greg Dorshimer • January 2026
+                </footer>
 
             </body>
         </html>
