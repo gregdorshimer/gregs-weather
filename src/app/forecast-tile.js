@@ -13,13 +13,13 @@ export default function ForecastTile({ info }) {
                 {info.name}
             </h3>
 
-            <p className="mt-1 text-xs text-slate-600">
-                {info.shortForecast}
-            </p>
-
-            <div className="mt-2 text-lg font-bold text-slate-900">
+            <div className="mt-1 text-lg font-bold text-slate-900">
                 {info.temperature}°{info.temperatureUnit}
             </div>
+
+            <p className="mt-2 text-xs text-slate-600">
+                {info.shortForecast}
+            </p>
         </div>
     );
 }
