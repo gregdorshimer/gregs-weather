@@ -22,15 +22,25 @@ export default function RadarMap({coords, zoom, layer="precip"}) {
 
             if (layer == "precip") {
                 // precip layer
-                // TODO remove cloud layer if present                
+                // TODO remove cloud layer if present  
+                
+                // using server api:
                 // L.tileLayer("/api/tiles/map/precipitation_new/{z}/{x}/{y}.png", {
                 //     attribution: "&copy; OpenWeather",
                 //     opacity: 0.5
                 // }).addTo(map);
+
+                // using weather maps 1.0:
                 L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
                     attribution: "&copy; OpenWeather",
                     opacity: 0.5,
                 }).addTo(map);
+
+                // using weather maps 2.0:
+                // L.tileLayer(`https://maps.openweathermap.org/maps/2.0/weather/1h/PAC0/{z}/{x}/{y}?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                //     attribution: "&copy; OpenWeather",
+                //     opacity: 0.5,
+                // }).addTo(map);
 
             } else if (layer == "clouds") {
                 // cloud layer
