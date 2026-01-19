@@ -23,14 +23,14 @@ export default function RadarMap({coords, zoom, layer="precip"}) {
             if (layer == "precip") {
                 // precip layer
                 // TODO remove cloud layer if present                
-                L.tileLayer("/api/tiles/map/precipitation_new/{z}/{x}/{y}.png", {
-                    attribution: "&copy; OpenWeather",
-                    opacity: 0.5
-                }).addTo(map);
-                // L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                // L.tileLayer("/api/tiles/map/precipitation_new/{z}/{x}/{y}.png", {
                 //     attribution: "&copy; OpenWeather",
-                //     opacity: 0.5,
+                //     opacity: 0.5
                 // }).addTo(map);
+                L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`, {
+                    attribution: "&copy; OpenWeather",
+                    opacity: 0.5,
+                }).addTo(map);
 
             } else if (layer == "clouds") {
                 // cloud layer
