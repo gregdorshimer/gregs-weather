@@ -17,7 +17,7 @@ export default function SearchBar({selectNewLoc}) {
     const loadOptions = (inputValue, callback) => {
         if (!ready || inputValue.length < 2) return callback([]);
 
-        // fetch suggestions using hook defined above, which causes suggestions to be updated
+        // fetch suggestions using hook defined above, which causes suggestions to be updated.
         // suggestions contains status and data
         setValue(inputValue);
 

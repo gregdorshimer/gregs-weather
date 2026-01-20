@@ -1,9 +1,13 @@
-import RadarMap from "./radar-map";
+import dynamic from "next/dynamic";
+
+const RadarMap = dynamic(() => import("./radar-map"), {
+    ssr: false,
+});
 
 export default function ForecastContet({currentLoc, forecast}) {
     if (currentLoc && forecast) {
         return (
-            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-[minmax(0,1fr)_minmax(0,500px)] gap-4 pb-4">
                 <div className="flex flex-col justify-center w-full">
                     <p className="text-sm text-slate-500">
                         {new Date().toLocaleString("en-US", { 
@@ -12,7 +16,7 @@ export default function ForecastContet({currentLoc, forecast}) {
                             month: "short", 
                             day: "numeric", 
                             hour: "numeric", 
-                            minute: "numeric", 
+                            minute: "numeric",
                         })}
                     </p>
 
@@ -33,7 +37,7 @@ export default function ForecastContet({currentLoc, forecast}) {
                     </p>
                 </div>
 
-                <div className="h-full w-full max-w-[500px] ml-auto">
+                <div className="justify-self-end max-w-[500px] w-full z-10">
                     <RadarMap coords={currentLoc.coords} zoom={9} />
                 </div>
             </div>

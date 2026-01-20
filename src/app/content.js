@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
 import SearchBar from "./search-bar.js";
@@ -10,6 +10,23 @@ export default function Content() {
     const [cachedLocs, setCachedLocs] = useState([]);
     const [currentLoc, setCurrentLoc] = useState(null);
     const [forecast, setForecast] = useState(null);
+
+    // define a default loc whose forecast will be shown when page is first loaded:
+    const defaultLoc = {
+        // label: "Portland, ME, USA",
+        city: "Portland",
+        state: "ME",
+        value: "ChIJLe6wqnKcskwRKfpyM7W2nX4"
+    }
+
+    // on first render, treat the default loc as though it was selected from the drop-down by calling selectNewLoc.
+    // the function you pass to useEffect can't be async, so you have to put an anonymous async function inside it and
+    // call that function immediately: 
+    useEffect(() => {
+        (async () => {
+            await selectNewLoc(defaultLoc);
+        })();
+    }, []);
 
     // function for getting the office code and gridpoints from NWS for given coords:
     const getOfficeGridpoints = async (coords) => {
@@ -42,7 +59,7 @@ export default function Content() {
         }
     };
 
-    // function to handle a location being clicked in the search bar dropd-down
+    // function to handle a location being clicked in the search bar dropdown
     const selectNewLoc = async (option) => {
         // "option" is the object that is returned by the Google Places API call
         if (!option) return;
@@ -130,6 +147,7 @@ export default function Content() {
                             <ForecastTile key={item.number} info={item} />
                         ))}
                     </div>
+
                 </div>
             </section>
             
