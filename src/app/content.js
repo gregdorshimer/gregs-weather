@@ -115,23 +115,25 @@ export default function Content() {
 
     return (
         <div className="relative z-1 flex h-full flex-col items-center justify-center">
-            <section className="w-full bg-slate-100 py-4">
+            <section className="w-full bg-slate-100">
                 <div className="mx-auto max-w-4xl px-4">
 
-                    <div className="relative z-30 flex justify-center pb-4">
+                    <div className="relative z-30 flex justify-center py-4 pb-4">
                         <div className="max-w-md w-full">
                             <SearchBar selectNewLoc={selectNewLoc} />
                         </div>
                     </div>
 
-                    <div className="flex justify-center gap-2 overflow-x-auto">
-                        {cachedLocs.map((loc, index) => (
-                            <Loc
-                                key={`${index}-${loc.coords}`}
-                                info={loc}
-                                selectCachedLoc={selectCachedLoc}
-                            />
-                        ))}
+                    <div className="overflow-x-auto pb-4">
+                        <div className="flex justify-center w-max gap-2">
+                            {cachedLocs.map((loc, index) => (
+                                <Loc
+                                    key={`${index}-${loc.coords}`}
+                                    info={loc}
+                                    selectCachedLoc={selectCachedLoc}
+                                />
+                            ))}
+                        </div>
                     </div>
 
                 </div>
