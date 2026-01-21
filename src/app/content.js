@@ -113,6 +113,14 @@ export default function Content() {
         }
     };
 
+    // function for removing a cachedLoc
+    const removeCachedLoc = (loc) => {
+        if (currentLoc.city == loc.city && currentLoc.state == loc.state) {
+            return;
+        }
+        setCachedLocs(cachedLocs.filter(cachedLoc => cachedLoc.city !== loc.city && cachedLoc.state !== loc.state))
+    };
+
     return (
         <div className="relative z-1 flex h-full flex-col items-center justify-center">
             <section className="w-full bg-slate-100">
@@ -131,6 +139,7 @@ export default function Content() {
                                     key={`${index}-${loc.coords}`}
                                     info={loc}
                                     selectCachedLoc={selectCachedLoc}
+                                    removeCachedLoc={removeCachedLoc}
                                 />
                             ))}
                         </div>

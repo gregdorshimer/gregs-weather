@@ -1,10 +1,24 @@
-export default function Loc({info, selectCachedLoc}) {
+import Chip from "@mui/material/Chip";
+
+export default function Loc({info, selectCachedLoc, removeCachedLoc}) {
     return (
-        <button
+        <Chip
+            label={`${info.city}, ${info.state}`}
             onClick={() => selectCachedLoc(info)}
-            className="shrink-0 rounded-full bg-[#5A6B2F] px-3 py-2 text-sm font-medium text-white hover:bg-[#7B8C45]"
-        >
-            {info.city}, {info.state}
-        </button>
+            onDelete={() => removeCachedLoc(info)}
+            sx={{
+                backgroundColor: "#5A6B2F",
+                color: "#ffffff",
+                "&:hover": {
+                    backgroundColor: "#7B8C45",
+                },
+                "& .MuiChip-deleteIcon": {
+                    color: "#ffffff",
+                    "&:hover": {
+                        color: "#e5e5e5",
+                    },
+                },
+            }}
+        />
     );
 }
