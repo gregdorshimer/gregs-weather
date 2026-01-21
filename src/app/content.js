@@ -125,7 +125,7 @@ export default function Content() {
                     </div>
 
                     <div className="overflow-x-auto pb-4">
-                        <div className="flex justify-center w-max gap-2">
+                        <div className="flex gap-2 w-max mx-auto">
                             {cachedLocs.map((loc, index) => (
                                 <Loc
                                     key={`${index}-${loc.coords}`}
