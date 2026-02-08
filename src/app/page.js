@@ -13,7 +13,8 @@ export default function Page() {
                         <p className="text-5xl font-bold mb-6">Greg's Weather</p>
                         <p className="text-2xl">
                             Forecasts for U.S. cities from the National Weather Service,
-                            autocompleted and geocoded using the Google Places API.
+                            autocompleted and geocoded using the Google Places API, with
+                            maps from OpenStreetMap and OpenWeatherMap.
                         </p>
                     </div>
                 </div>

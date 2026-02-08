@@ -19,7 +19,7 @@ export default function RadarMap({ coords, zoom }) {
             />
             <TileLayer 
                 url={`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY}`}
-                opacity={0.5}
+                // opacity={0.999}
                 attribution="<a href='https://openweathermap.org'>&copy; OpenWeatherMap</a>"
             />
             {/* <TileLayer
