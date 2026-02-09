@@ -4,7 +4,6 @@ import { getGeocode, getLatLng } from "use-places-autocomplete";
 import SearchBar from "./search-bar.js";
 import Loc from "./loc.js";
 import ForecastContent from "./forecast-content.js";
-import ForecastTile from "./forecast-tile";
 
 export default function Content() {
     const [cachedLocs, setCachedLocs] = useState([]);
@@ -45,13 +44,13 @@ export default function Content() {
 
     // function for getting a forecast for the given coords from NWS:
     const getForecast = async (coords) => {
-        const obj = await getOfficeGridpoints(coords);
+        const points = await getOfficeGridpoints(coords);
         try {
-            const response = await axios.get(`https://api.weather.gov/gridpoints/${obj.properties.gridId}/${obj.properties.gridX},${obj.properties.gridY}/forecast`);
-            // TODO use above url appended with /hourly to get hourly forecast, then display temp/precip/humid/wind in a graph
+            const url = `https://api.weather.gov/gridpoints/${points.properties.gridId}/${points.properties.gridX},${points.properties.gridY}/forecast/hourly`;
+            const response = await axios.get(url);
             return {
                 forecast: response.data,
-                points: obj
+                points: points 
             };
         } catch (error) {
             console.error(error);
@@ -150,15 +149,7 @@ export default function Content() {
 
             <section className="w-full py-4">
                 <div className="mx-auto max-w-4xl px-4">
-
                     <ForecastContent currentLoc={currentLoc} forecast={forecast} />
-
-                    <div className="flex gap-4 overflow-x-auto pb-4">
-                        {forecast && forecast.properties.periods.map(item => (
-                            <ForecastTile key={item.number} info={item} />
-                        ))}
-                    </div>
-
                 </div>
             </section>
             

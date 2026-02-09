@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import Recenter from "./recenter";
+import Recenter from "./recenter.js";
 
 export default function RadarMap({ coords, zoom }) {
     const lat = Number(coords.split(",")[0]);
