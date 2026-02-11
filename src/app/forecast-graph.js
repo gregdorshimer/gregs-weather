@@ -56,7 +56,6 @@ export default function ForecastGraph({currentLoc, forecast}) {
         return `${weekday}, ${monthDay}`;
     };
 
-
     // create an array of ticks for the y-axis
     const maxTemp = Math.ceil(Math.max(...periods.map(p => p.temp)) / 10) * 10;
     const minTemp = Math.floor(Math.min(...periods.map(p => p.temp)) / 10) * 10;
@@ -76,7 +75,7 @@ export default function ForecastGraph({currentLoc, forecast}) {
                 >
                     <XAxis
                         dataKey="startTime"
-                        tick={noonTicks}
+                        ticks={noonTicks}
                         tickFormatter={formatNoonLabel}
                     />
                     <YAxis
