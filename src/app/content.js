@@ -9,6 +9,7 @@ export default function Content() {
     const [cachedLocs, setCachedLocs] = useState([]);
     const [currentLoc, setCurrentLoc] = useState(null);
     const [forecast, setForecast] = useState(null);
+    const [hourlyForecast, setHourlyForecast] = useState(null);
 
     // define a default loc whose forecast will be shown when page is first loaded:
     const defaultLoc = {
@@ -43,10 +44,11 @@ export default function Content() {
     };
 
     // function for getting a forecast for the given coords from NWS:
-    const getForecast = async (coords) => {
+    const getForecast = async (coords, hourly) => {
         const points = await getOfficeGridpoints(coords);
         try {
-            const url = `https://api.weather.gov/gridpoints/${points.properties.gridId}/${points.properties.gridX},${points.properties.gridY}/forecast/hourly`;
+            let url = `https://api.weather.gov/gridpoints/${points.properties.gridId}/${points.properties.gridX},${points.properties.gridY}/forecast`;
+            if (hourly) url += "/hourly";
             const response = await axios.get(url);
             return {
                 forecast: response.data,
@@ -78,8 +80,10 @@ export default function Content() {
 
             // set the newly geocoded loc to be the currentLoc, get its forecast, and set the forecast:
             setCurrentLoc(newLoc);
-            const newForecast = await getForecast(newLoc.coords);
+            const newForecast = await getForecast(newLoc.coords, false);
             setForecast(newForecast.forecast);
+            const newHourlyForecast = await getForecast(newLoc.coords, true);
+            setHourlyForecast(newHourlyForecast.forecast);
 
             // add timeZone to newLoc, and add newLoc to the cachedLocs:
             newLoc.timeZone = newForecast.points.properties.timeZone;
@@ -105,8 +109,10 @@ export default function Content() {
     const selectCachedLoc = async (loc) => {
         try {
             setCurrentLoc(loc);
-            const newForecast = await getForecast(loc.coords);
+            const newForecast = await getForecast(loc.coords, false);
             setForecast(newForecast.forecast);
+            const newHourlyForecast = await getForecast(loc.coords, true);
+            setHourlyForecast(newHourlyForecast.forecast);
         } catch (error) {
             console.error(error);
         }
@@ -149,7 +155,7 @@ export default function Content() {
 
             <section className="w-full py-4">
                 <div className="mx-auto max-w-4xl px-4">
-                    <ForecastContent currentLoc={currentLoc} forecast={forecast} />
+                    <ForecastContent currentLoc={currentLoc} forecast={forecast} hourlyForecast={hourlyForecast} />
                 </div>
             </section>
             

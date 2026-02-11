@@ -1,7 +1,9 @@
 import { LineChart, XAxis, YAxis, Line, Tooltip, Legend, ResponsiveContainer, CartesianGrid, ReferenceLine, ReferenceArea } from "recharts";
 
-export default function ForecastGraph({currentLoc, forecast}) {
-    const periods = forecast.properties.periods.map(period => {
+export default function ForecastGraph({hourlyForecast}) {
+    // extract just periods from the forecast object and format into a new object with the correct fields
+    // to be used with Rechart:
+    const periods = hourlyForecast.properties.periods.map(period => {
         return {
             startTime: period.startTime,
             temp: period.temperature,
@@ -77,6 +79,7 @@ export default function ForecastGraph({currentLoc, forecast}) {
                         dataKey="startTime"
                         ticks={noonTicks}
                         tickFormatter={formatNoonLabel}
+                        tickMargin={5}
                     />
                     <YAxis
                         ticks={ticks}
@@ -89,11 +92,12 @@ export default function ForecastGraph({currentLoc, forecast}) {
                         domain={[0, 100]}
                         tickFormatter={(v) => `${v}%`}
                     />
-                    <Line type="monotone" dataKey="temp" name="Temp. (°F)" dot={false} stroke="#d20703" />
                     <Line type="monotone" dataKey="precip" yAxisId="right" name="Chance of Precip. (%)" dot={false} stroke="#03a218" />
+                    <Line type="monotone" dataKey="temp" name="Temp. (°F)" dot={false} stroke="#d20703" />
 
                     <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <ReferenceLine y={32} stroke="#3546ff82" />
+                    <ReferenceLine y={0} stroke="#5ed7fff2" />
                     {dayBounds.map((dayBound, index) => (
                         <ReferenceLine key={`${index}-${dayBound}`} x={dayBound} stroke="#b6b6b6" />
                     ))}
