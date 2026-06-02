@@ -28,7 +28,7 @@
     "react-select": "^5.10.1",
     "recharts": "^3.7.0",
     "shelljs": "^0.10.0",
-    "tmp": "^0.2.5",
+    "tmp": "^0.2.7",
     "use-places-autocomplete": "^4.0.1"
   },
   "devDependencies": {
