@@ -1,30 +1,34 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { getGeocode, getLatLng } from "use-places-autocomplete";
+import { useLocalStorage } from "../hooks/useLocalStorage.js";
 import SearchBar from "./search-bar.js";
 import Loc from "./loc.js";
 import ForecastContent from "./forecast-content.js";
 
 export default function Content() {
-    const [cachedLocs, setCachedLocs] = useState([]);
-    const [currentLoc, setCurrentLoc] = useState(null);
+    const [cachedLocs, setCachedLocs] = useLocalStorage("cachedLocs", []);
+    const [currentLoc, setCurrentLoc] = useLocalStorage("currentLoc", 
+        {
+            city: "Portland",
+            state: "ME",
+            value: "ChIJLe6wqnKcskwRKfpyM7W2nX4"
+
+            // reference:
+            // city: "Philadelphia",
+            // state: "PA",
+            // value: "ChIJ60u11Ni3xokRwVg-jNgU9Yk"
+        }
+    );
     const [forecast, setForecast] = useState(null);
     const [hourlyForecast, setHourlyForecast] = useState(null);
-
-    // define a default loc whose forecast will be shown when page is first loaded:
-    const defaultLoc = {
-        // label: "Portland, ME, USA",
-        city: "Portland",
-        state: "ME",
-        value: "ChIJLe6wqnKcskwRKfpyM7W2nX4"
-    }
 
     // on first render, treat the default loc as though it was selected from the drop-down by calling selectNewLoc.
     // the function you pass to useEffect can't be async, so you have to put an anonymous async function inside it and
     // call that function immediately: 
     useEffect(() => {
         (async () => {
-            await selectNewLoc(defaultLoc);
+            await selectNewLoc(currentLoc);
         })();
     }, []);
 
@@ -33,9 +37,9 @@ export default function Content() {
         const [lat, lng] = coords.split(",");
         try {
             const response = await axios.get(`https://api.weather.gov/points/${lat}%2C${lng}`);
-            const office = response.data.properties.gridId;
-            const gridpoints = `${response.data.properties.gridX},${response.data.properties.gridY}`;
-            const timeZone = response.data.properties.timeZone;
+            // const office = response.data.properties.gridId;
+            // const gridpoints = `${response.data.properties.gridX},${response.data.properties.gridY}`;
+            // const timeZone = response.data.properties.timeZone;
             return response.data;
         } catch (error) {
             console.error(error);
@@ -69,6 +73,7 @@ export default function Content() {
         const newLoc = {
             city: option.city,
             state: option.state,
+            value: option.value
         };
 
         try {
@@ -78,8 +83,10 @@ export default function Content() {
             const { lat, lng } = await getLatLng(results[0]); // function to extract {lat, lng} from the complicated json object returned by getGeocode
             newLoc.coords = `${lat},${lng}`;
 
-            // set the newly geocoded loc to be the currentLoc, get its forecast, and set the forecast:
+            // set the newly geocoded loc to be the currentLoc in state:
             setCurrentLoc(newLoc);
+
+            // get its forecast, and set the forecast in state only:
             const newForecast = await getForecast(newLoc.coords, false);
             setForecast(newForecast.forecast);
             const newHourlyForecast = await getForecast(newLoc.coords, true);
