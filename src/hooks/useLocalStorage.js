@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-// a hook for keeping a state variable synchronized with a local storage key
+// a hook for keeping a state variable synchronized with a local storage key/value
 export function useLocalStorage(key, defaultValue) {
   const [value, setValue] = useState(() => {
     const item = localStorage.getItem(key);
