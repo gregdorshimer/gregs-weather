@@ -16,7 +16,7 @@
     "@mui/material": "^7.3.7",
     "@react-google-maps/api": "^2.20.8",
     "axios": "^1.18.1",
-    "brace-expansion": "^5.0.6",
+    "brace-expansion": "^5.0.7",
     "cross-spawn": "^7.0.6",
     "leaflet": "^1.9.4",
     "minimatch": "^10.2.4",
